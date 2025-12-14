@@ -1,14 +1,3 @@
-Below is a **clean, expandable, beginner-friendly main `README.md`** for a **`macos-config` repository**, written so you can **grow it over time** without rewriting structure.
-
-This README:
-
-* Explains *where* optimizations live
-* Explains *how* to use them safely
-* Leaves room for future directories (apps, dotfiles, etc.)
-* Does not overwhelm beginners
-
----
-
 # `macos-config` — Personal macOS Configuration
 
 A structured repository for managing **macOS configuration, productivity optimizations, and workflow setup**.
