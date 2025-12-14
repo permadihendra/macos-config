@@ -1,0 +1,189 @@
+#!/usr/bin/env bash
+set -e
+
+OMZ_DIR="$HOME/.oh-my-zsh"
+ZSH_CUSTOM="$OMZ_DIR/custom"
+P10K_DIR="$ZSH_CUSTOM/themes/powerlevel10k"
+FONT_NAME="MesloLGS NF"
+P10K_CONFIG="$HOME/.p10k.zsh"
+P10K_BACKUP="$HOME/.p10k.zsh.backup.$(date +%Y%m%d%H%M%S)"
+
+OS="$(uname -s)"
+
+report=()
+
+print_header() {
+  echo
+  echo "Zsh + Oh My Zsh + Powerlevel10k Setup"
+  echo "===================================="
+  echo
+}
+
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+check_zsh() {
+  if ! command_exists zsh; then
+    echo "Zsh not found."
+    if [[ "$OS" == "Darwin" ]]; then
+      echo "Install via:"
+      echo "  brew install zsh"
+    else
+      echo "Install via your package manager (apt, dnf, pacman)."
+    fi
+    exit 1
+  fi
+  report+=("Zsh: installed")
+}
+
+install_ohmyzsh() {
+  if [[ -d "$OMZ_DIR" ]]; then
+    report+=("Oh My Zsh: already installed")
+    return
+  fi
+
+  echo "Installing Oh My Zsh (official installer)..."
+  RUNZSH=no CHSH=no sh -c \
+    "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  report+=("Oh My Zsh: installed")
+}
+
+install_powerlevel10k() {
+  if [[ -d "$P10K_DIR" ]]; then
+    report+=("Powerlevel10k: already installed")
+    return
+  fi
+
+  echo "Installing Powerlevel10k..."
+  git clone --depth=1 \
+    https://github.com/romkatv/powerlevel10k.git \
+    "$P10K_DIR"
+
+  report+=("Powerlevel10k: installed")
+}
+
+apply_compact_p10k_preset() {
+  if [[ -f "$P10K_CONFIG" ]]; then
+    cp "$P10K_CONFIG" "$P10K_BACKUP"
+    report+=("Powerlevel10k config backed up to $P10K_BACKUP")
+  fi
+
+  cp p10k/.p10k.zsh ~/
+  report+=("Powerlevel10k: compact productivity preset applied")
+}
+
+configure_zshrc() {
+  local zshrc="$HOME/.zshrc"
+
+  if [[ ! -f "$zshrc" ]]; then
+    touch "$zshrc"
+  fi
+
+  if ! grep -q "powerlevel10k.zsh-theme" "$zshrc"; then
+    sed -i.bak \
+      's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' \
+      "$zshrc" 2>/dev/null || \
+      echo 'ZSH_THEME="powerlevel10k/powerlevel10k"' >> "$zshrc"
+
+    report+=("Zsh theme: Powerlevel10k set")
+  else
+    report+=("Zsh theme: already configured")
+  fi
+}
+
+install_font_notice() {
+  echo
+  echo "Font installation required (manual step):"
+  echo
+  echo "Recommended font:"
+  echo "  MesloLGS Nerd Font"
+  echo
+  echo "Download from:"
+  echo "  https://github.com/ryanoasis/nerd-fonts/releases"
+  echo
+  echo "After installing:"
+  echo "- Set your terminal font to 'MesloLGS NF'"
+  echo "- Restart terminal"
+  echo
+  report+=("Font: MesloLGS Nerd Font (manual install required)")
+}
+
+status() {
+  echo "Status:"
+  [[ -d "$OMZ_DIR" ]] && echo "✔ Oh My Zsh" || echo "✘ Oh My Zsh"
+  [[ -d "$P10K_DIR" ]] && echo "✔ Powerlevel10k" || echo "✘ Powerlevel10k"
+  command_exists zsh && echo "✔ Zsh" || echo "✘ Zsh"
+}
+
+print_report() {
+  echo
+  echo "Report"
+  echo "------"
+  for item in "${report[@]}"; do
+    echo "- $item"
+  done
+  echo
+}
+
+### ENTRY POINT ###
+
+print_header
+
+case "$1" in
+  install)
+    check_zsh
+    install_ohmyzsh
+    install_powerlevel10k
+    configure_zshrc
+    install_font_notice
+    ;;
+  reconfigure)
+    if [[ ! -d "$P10K_DIR" ]]; then
+      echo "Powerlevel10k is not installed. Run install first."
+      exit 1
+    fi
+
+    echo
+    echo "Reconfigure Zsh / Powerlevel10k"
+    echo "--------------------------------"
+    echo "Choose an option:"
+    echo "1) Interactive Powerlevel10k configuration (recommended for first-time users)"
+    echo "2) Apply compact productivity preset (one-line, fast, minimal)"
+    echo "3) Cancel"
+    echo
+
+    read -r -p "Enter choice [1-3]: " choice
+
+    case "$choice" in
+      1)
+        report+=("Powerlevel10k: interactive reconfiguration started")
+        echo "Starting Powerlevel10k configuration wizard..."
+        zsh -i -c 'p10k configure'
+        ;;
+      2)
+        apply_compact_p10k_preset
+        ;;
+      *)
+        echo "Cancelled."
+        exit 0
+        ;;
+    esac
+    ;;
+  status)
+    status
+    exit 0
+    ;;
+  *)
+    echo "Usage:"
+    echo "  $0 install"
+    echo "  $0 reconfigure"
+    echo "  $0 status"
+    exit 1
+    ;;
+esac
+
+print_report
+
+echo "Restart your terminal to apply changes."
