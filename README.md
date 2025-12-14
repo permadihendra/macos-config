@@ -1,83 +1,116 @@
-# macOS Productivity Setup (Safe & Reversible)
+Below is a **clean, expandable, beginner-friendly main `README.md`** for a **`macos-config` repository**, written so you can **grow it over time** without rewriting structure.
 
-This repository contains a **safe, reversible, and beginner-friendly**
-set of scripts to make macOS **faster, more responsive, and more predictable**
-for productivity work.
+This README:
 
-No hacks. No SIP changes. No system files touched.
-
----
-
-## What This Does
-
-When enabled, this setup:
-
-- Reduces UI and window animations
-- Makes keyboard input faster and more responsive
-- Removes unnecessary Finder animations
-- Speeds up Dock, minimize, and desktop switching (as much as macOS allows)
-- Improves overall “snappiness”
-
-When restored, macOS returns to **Apple’s default behavior**.
+* Explains *where* optimizations live
+* Explains *how* to use them safely
+* Leaves room for future directories (apps, dotfiles, etc.)
+* Does not overwhelm beginners
 
 ---
 
-## Requirements
+# `macos-config` — Personal macOS Configuration
 
-- macOS Ventura / Sonoma / newer
-- Terminal access
-- No administrator privileges required
+A structured repository for managing **macOS configuration, productivity optimizations, and workflow setup**.
+
+This repo is designed to be:
+
+* Safe
+* Reversible
+* Modular
+* Easy to expand over time
 
 ---
 
-## How to Use
+## Repository Structure
 
-### 1. Make scripts executable
+```
+macos-config/
+├── optimize/        # System-level productivity & performance tweaks
+├── apps/            # (Future) App installation & configuration
+├── dotfiles/        # (Future) Shell, editor, and tool configs
+├── scripts/         # (Future) General-purpose utilities
+└── README.md        # This file
+```
+
+Each directory is **self-contained** and has its own documentation.
+
+---
+
+## Optimization Scripts (`optimize/`)
+
+The `optimize` directory contains **safe macOS tuning scripts** focused on:
+
+* Reducing UI and window animations
+* Improving keyboard responsiveness
+* Making Finder and Dock more predictable
+* Speeding up desktop switching (within macOS limits)
+
+These scripts **do not**:
+
+* Modify system files
+* Disable security features
+* Require SIP changes
+* Install background services
+
+### How to Use
 
 ```bash
+cd optimize
 chmod +x *.sh
-```
-
-### 2. Check system status (recommended)
-```bash
 ./check.sh
-```
-### 3. Enable productivity mode
-```bash
 ./apply.sh enable
 ```
 
-### 4. Restore macOS defaults
+To restore macOS defaults:
+
 ```bash
 ./apply.sh restore
 ```
 
-### Important Note About Animations
+See `optimize/README.md` for full details.
 
-macOS does not allow fully disabling desktop (Spaces) animations.
-This is an Apple limitation.
+---
 
-For best results, also enable manually:
-```sh
-System Settings → Accessibility → Display → Reduce motion
-```
-This cannot be automated safely on modern macOS.
+## Design Philosophy
 
-### What This Does NOT Do
-- Does NOT modify system files
-- Does NOT disable security features
-- Does NOT install background services
-- Does NOT break updates
-- Does NOT require reboot
+* **Explicit over implicit**
+* **Reversible over permanent**
+* **Keyboard-first**
+* **No hacks**
+* **No magic**
 
-### Who This Is For
-- Developers
-- Data analysts
-- Terminal users
-- Keyboard-driven workflows
-- Users who value speed over visual effects
+Everything should be understandable by someone reading it for the first time.
 
-### Known Limitations
-- Desktop switching is faster, but not instant
-- Some animations are enforced by macOS and cannot be removed
-- This is the maximum optimization possible using supported methods
+---
+
+## Safety First
+
+This repository intentionally avoids:
+
+* Private macOS APIs
+* Binary patching
+* SIP modifications
+* Accessibility permission abuse
+
+If something requires unsafe behavior, it does **not belong here**.
+
+---
+
+## Who This Is For
+
+* Developers
+* Data analysts
+* Terminal users
+* Linux users transitioning to macOS
+* Anyone who wants macOS to feel fast and predictable
+
+---
+
+
+## License
+
+Personal configuration.
+Use, adapt, and learn responsibly.
+
+---
