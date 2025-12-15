@@ -127,6 +127,114 @@ print_report() {
   echo
 }
 
+# ------------ZSH PLUGIN INSTALL-------------- #
+# --- Zsh custom directory ---
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+# --- Helper: install plugin from upstream ---
+install_zsh_plugin() {
+    local name="$1"
+    local repo="$2"
+    local dir="$ZSH_CUSTOM/plugins/$name"
+
+    if [[ -d "$dir" ]]; then
+        echo "✔ $name already installed"
+    else
+        echo "Installing $name..."
+        git clone --depth=1 "$repo" "$dir"
+    fi
+}
+
+
+# Add config to .zshrc
+ZSHRC="$HOME/.zshrc"
+
+ZSH_CONFIG_BLOCK=$(cat <<'EOF'
+# >>> macos-config zsh setup >>>
+
+# Zsh plugin configuration (managed by macos-config)
+
+
+# History substring search keybindings
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+# Accept autosuggestion with TAB if available
+bindkey '^I' autosuggest-accept
+
+# Autosuggestions tuning
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
+
+# <<< macos-config zsh setup <<<
+EOF
+)
+
+update_zshrc() {
+    echo "Updating ~/.zshrc ..."
+
+    # Create .zshrc if missing
+    if [[ ! -f "$ZSHRC" ]]; then
+        touch "$ZSHRC"
+        echo "Created ~/.zshrc"
+    fi
+
+    # ------- INSTALLING ZSH PLUGIN --------#
+    echo "Installing Zsh plugins..."
+
+    install_zsh_plugin zsh-autosuggestions \
+        https://github.com/zsh-users/zsh-autosuggestions.git
+
+    install_zsh_plugin zsh-history-substring-search \
+        https://github.com/zsh-users/zsh-history-substring-search.git
+
+    install_zsh_plugin zsh-syntax-highlighting \
+        https://github.com/zsh-users/zsh-syntax-highlighting.git
+
+    # --------------------------------------#
+
+    # Remove existing managed block if present
+    if grep -q ">>> macos-config zsh setup >>>" "$ZSHRC"; then
+        echo "Existing macos-config block found, updating..."
+        sed -i '' '/# >>> macos-config zsh setup >>>/,/# <<< macos-config zsh setup <<</d' "$ZSHRC"
+    else
+        echo "No existing macos-config block found, appending..."
+    fi
+
+    # Append updated block
+    printf "\n%s\n" "$ZSH_CONFIG_BLOCK" >> "$ZSHRC"
+
+    echo "Zsh configuration updated."
+
+    echo ""
+    echo "────────────────────────────────────────────"
+    echo "MANUAL CONFIGURATION REQUIRED"
+    echo "────────────────────────────────────────────"
+    echo ""
+    echo "This script does NOT edit your Oh My Zsh plugin list."
+    echo ""
+    echo "To enable recommended plugins, edit ~/.zshrc and ensure:"
+    echo ""
+    echo "  plugins=("
+    echo "    git"
+    echo "    zsh-autosuggestions"
+    echo "    zsh-history-substring-search"
+    echo "    zsh-syntax-highlighting"
+    echo "  )"
+    echo ""
+    echo "IMPORTANT:"
+    echo "• This must be placed BEFORE:"
+    echo "    source \$ZSH/oh-my-zsh.sh"
+    echo ""
+    echo "Then restart Zsh with:"
+    echo "  exec zsh"
+    echo ""
+    echo "────────────────────────────────────────────"
+
+}
+
+
+# ------------ZSH PLUGIN INSTALL-------------- #
+
 ### ENTRY POINT ###
 
 print_header
@@ -171,6 +279,9 @@ case "$1" in
         ;;
     esac
     ;;
+  plugins-only)
+    update_zshrc
+    ;;
   status)
     status
     exit 0
@@ -179,6 +290,7 @@ case "$1" in
     echo "Usage:"
     echo "  $0 install"
     echo "  $0 reconfigure"
+    echo "  $0 plugins-only"
     echo "  $0 status"
     exit 1
     ;;
