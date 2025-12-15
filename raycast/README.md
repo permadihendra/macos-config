@@ -155,10 +155,6 @@ The script will:
 If the file is missing, the script continues safely.
 
 ---
-Below is a **clean, beginner-friendly, and well-structured README section** you can drop directly into your main repo README or into a Raycast-specific README.
-Tone is explanatory, opinionated, but safe — consistent with the philosophy you’ve been following.
-
----
 
 ## Raycast Keyboard Shortcuts – Recommended Setup
 
