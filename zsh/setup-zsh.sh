@@ -279,7 +279,7 @@ case "$1" in
         ;;
     esac
     ;;
-  plugins-only)
+  plugins-install)
     update_zshrc
     ;;
   status)
@@ -290,7 +290,7 @@ case "$1" in
     echo "Usage:"
     echo "  $0 install"
     echo "  $0 reconfigure"
-    echo "  $0 plugins-only"
+    echo "  $0 plugins-install"
     echo "  $0 status"
     exit 1
     ;;
