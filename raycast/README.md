@@ -155,6 +155,126 @@ The script will:
 If the file is missing, the script continues safely.
 
 ---
+Below is a **clean, beginner-friendly, and well-structured README section** you can drop directly into your main repo README or into a Raycast-specific README.
+Tone is explanatory, opinionated, but safe — consistent with the philosophy you’ve been following.
+
+---
+
+## Raycast Keyboard Shortcuts – Recommended Setup
+
+This repository uses **Raycast** as the primary tool for window management and fast application switching.
+The shortcut design prioritizes:
+
+* Ergonomics (minimal finger travel)
+* Low conflict with macOS and applications
+* Consistency with visual layout (Dock)
+* Easy recall for daily use
+
+The setup is **manual, explicit, and reversible**.
+
+---
+
+### 1. Window Management Shortcuts
+
+Window management uses **Control + Option** combined with **directional keys**.
+This mirrors spatial movement and avoids conflicts with application shortcuts.
+
+#### Rationale
+
+* Arrow keys match window direction
+* `⌃⌥` is rarely used by apps
+* Works reliably across most applications
+* Similar mental model to tiling window managers
+
+#### Recommended Mappings
+
+| Shortcut | Action                    |
+| -------- | ------------------------- |
+| `⌃⌥↑`    | Fullscreen                |
+| `⌃⌥↓`    | Reasonable size / Restore |
+| `⌃⌥←`    | Left half                 |
+| `⌃⌥→`    | Right half                |
+| `⌃⌥;`    | Top-left quarter          |
+| `⌃⌥,`    | Bottom-left quarter       |
+| `⌃⌥'`    | Top-right quarter         |
+| `⌃⌥/`    | Bottom-right quarter      |
+
+> These shortcuts are intended to be configured using **Raycast → Window Management** commands.
+
+---
+
+### 2. Dock-Ordered App Switching (Right ⌘ + ⌥ + Number)
+
+This setup recreates a **Windows-style taskbar workflow** using Raycast, while remaining fully compatible with macOS.
+
+#### Concept
+
+1. Core applications are **manually ordered in the Dock**
+2. Numeric shortcuts mirror this order
+3. Switching becomes both **visual and muscle-memory driven**
+
+This combines:
+
+* Visual memory (Dock position)
+* Numeric recall
+* Fast keyboard access
+
+---
+
+#### Shortcut Pattern
+
+```
+Right ⌘ + ⌥ + Number
+```
+
+Examples:
+
+| Shortcut | Application (example) |
+| -------- | --------------------- |
+| `R⌘⌥1`   | Finder                |
+| `R⌘⌥2`   | Browser               |
+| `R⌘⌥3`   | Telegram              |
+| `R⌘⌥4`   | Terminal              |
+| `R⌘⌥5`   | Code Editor           |
+
+> Always use **Right Command**, not Left.
+> Most applications bind shortcuts only to Left Command, reducing conflicts.
+
+---
+
+#### Important Notes
+
+* Dock order is **manual and intentional**
+* Raycast shortcuts do **not automatically follow Dock order**
+* Keep the number of mapped apps small (recommended: 1–6)
+* Reordering the Dock requires updating shortcuts accordingly
+
+---
+
+### Recommended Usage Pattern
+
+| Task                      | Method           |
+| ------------------------- | ---------------- |
+| Switch between core apps  | `R⌘⌥ + Number`   |
+| Switch ad-hoc apps        | Raycast search   |
+| Switch windows (same app) | `⌘ + ``          |
+| Move / resize windows     | `⌃⌥ + Direction` |
+
+This avoids shortcut overload while keeping common actions fast.
+
+---
+
+### Design Philosophy Summary
+
+* **Do not fight macOS defaults**
+* Optimize only high-frequency actions
+* Prefer clarity over cleverness
+* Avoid deep system modifications
+* Keep everything reversible
+
+This Raycast configuration is designed to be **stable across macOS updates** and **portable across machines**.
+
+---
 
 ## Common Questions
 
