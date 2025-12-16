@@ -110,6 +110,70 @@ install_font_notice() {
   report+=("Font: MesloLGS Nerd Font (manual install required)")
 }
 
+# -----------------INSTAL PFETCH--------------------#
+install_pfetch_rs() {
+  echo "==> Installing terminal decoration (pfetch-rs)..."
+
+  # Check Homebrew
+  if ! command -v brew >/dev/null; then
+    echo "ERROR: Homebrew not found."
+    echo "Install Homebrew first: https://brew.sh"
+    return 1
+  fi
+
+  # Install pfetch-rs
+  if command -v pfetch >/dev/null; then
+    echo "pfetch already installed."
+  else
+    echo "Installing pfetch-rs..."
+    brew install pfetch-rs
+  fi
+
+  # Append zshrc block if missing
+  local zshrc="$HOME/.zshrc"
+
+  if ! grep -q "macos-config: terminal decoration" "$zshrc" 2>/dev/null; then
+    echo "Enabling terminal decoration in .zshrc..."
+
+    cat <<'EOF' >> "$zshrc"
+
+# >>> macos-config: terminal decoration >>>
+
+# pfetch-rs is configured via environment variables.
+# These must be exported before execution.
+export PF_INFO="ascii title os host kernel uptime pkgs memory"
+export PF_COLOR=1
+# Colors
+export PF_COL1=73
+export PF_COL2=250
+export PF_COL3=73
+
+# Title color override
+export PF_TITLE_COLOR=175
+
+# Separator
+export PF_SEP="  "
+
+ENABLE_TERMINAL_DECORATION=true
+
+if [[ "$ENABLE_TERMINAL_DECORATION" == "true" ]] \
+   && [[ -o interactive ]] \
+   && [[ -z "$SSH_CONNECTION" ]]; then
+  command -v pfetch >/dev/null && pfetch
+fi
+# <<< macos-config: terminal decoration <<<
+EOF
+  else
+    echo "Terminal decoration already configured in .zshrc."
+  fi
+
+  echo "Done. Restart your shell with: exec zsh"
+}
+
+
+
+
+# -----------------END INSTALL PFETCH ---------------#
 status() {
   echo "Status:"
   [[ -d "$OMZ_DIR" ]] && echo "✔ Oh My Zsh" || echo "✘ Oh My Zsh"
@@ -282,6 +346,9 @@ case "$1" in
   plugins-install)
     update_zshrc
     ;;
+  pfetch-rs-install)
+    install_pfetch_rs
+    ;;
   status)
     status
     exit 0
@@ -291,6 +358,7 @@ case "$1" in
     echo "  $0 install"
     echo "  $0 reconfigure"
     echo "  $0 plugins-install"
+    echo "  $0 pfetch-rs-install"
     echo "  $0 status"
     exit 1
     ;;
