@@ -63,7 +63,7 @@ macos-config/zsh/
 ### Step 2 — Navigate to This Directory
 
 ```bash
-cd macos-config/apps/zsh
+cd macos-config/zsh
 ```
 
 ---
@@ -142,25 +142,7 @@ After installing:
 
 ---
 
-### 2. Configure Powerlevel10k Prompt
-
-On first terminal restart, Powerlevel10k will usually start its configuration wizard automatically.
-
-If it does not, run:
-
-```bash
-p10k configure
-```
-
-This allows you to:
-
-* Choose prompt style
-* Enable Git status
-* Adjust spacing and icons
-
----
-
-### 3. Choose a Terminal Color Theme (Optional but Recommended)
+### 2. Choose a Terminal Color Theme (Optional but Recommended)
 
 This script **does not change terminal colors**.
 
@@ -188,17 +170,109 @@ Command:
 ./setup-zsh.sh reconfigure
 ```
 
-### Strong Recommendation (Next Step)
+---
+Understood. Below is a **much simpler, more intuitive, beginner-first version**.
+This assumes the reader just wants things to work, with minimal reading and no shell theory.
 
-Next logical enhancements:
-1. Add Zsh plugins (autosuggestions, syntax highlighting)
-2. Add `uninstall` / `restore`
-3. Add preset selector (`compact`, `verbose`, `minimal`)
-4. Add Linux package manager detection
+You can replace your section with this.
 
-Tell me which one you want next.
+---
 
+## Improve Your Terminal Experience (Recommended)
 
+This setup adds **small but useful improvements** to your terminal:
+
+* Command suggestions as you type
+* Command error highlighting
+* A clean system info banner when opening a new terminal
+
+All changes are **safe**, **optional**, and **easy to remove**.
+
+---
+
+### 1. Zsh Plugins (Autocomplete & Highlighting)
+
+These plugins help you type faster and avoid mistakes:
+
+* **Autosuggestions**
+  Shows a gray suggestion based on your history
+  → Press **→** or **Tab** to accept
+
+* **Syntax Highlighting**
+  Shows valid commands in green and errors in red
+
+#### Install
+
+```bash
+./setup-zsh.sh plugins-install
+```
+
+#### One-Time Manual Step (Required)
+
+Open your Zsh config:
+
+```bash
+nano ~/.zshrc
+```
+
+Find the line starting with `plugins=` and make sure it includes:
+
+```bash
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+```
+
+Save the file, then restart the terminal or run:
+
+```bash
+exec zsh
+```
+
+That’s it.
+
+---
+
+### 2. Show System Info When Opening Terminal (pfetch-rs)
+
+This shows a small logo and basic system info when you open a new terminal.
+It is **only for looks** and has no performance impact.
+
+#### Install
+
+```bash
+./setup-zsh.sh pfetch-rs-install
+```
+
+What this does:
+
+* Installs `pfetch-rs`
+* Automatically shows it when you open a terminal
+* Does **not** break your existing config
+
+---
+
+### Optional: Change What Is Shown
+
+pfetch-rs uses a simple list to decide what to show.
+
+Example (default):
+
+```bash
+export PF_INFO="ascii title os host kernel uptime pkgs memory"
+```
+
+If you don’t want package info, just remove `pkgs` from the list.
+
+---
+
+### If Something Doesn’t Work
+
+* Open a **new terminal window**
+* Make sure you restarted Zsh (`exec zsh`)
+* Try running manually:
+
+  ```bash
+  pfetch
+  ```
 ---
 
 ## What This Script Will NOT Do
