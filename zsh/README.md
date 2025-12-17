@@ -25,7 +25,6 @@ The setup is designed to be:
 
 * Font installation
 * Terminal color theme selection
-* Powerlevel10k interactive prompt tuning
 
 These steps are intentionally manual to avoid breaking existing terminal setups.
 
@@ -169,12 +168,6 @@ Command:
 ```bash
 ./setup-zsh.sh reconfigure
 ```
-
----
-Understood. Below is a **much simpler, more intuitive, beginner-first version**.
-This assumes the reader just wants things to work, with minimal reading and no shell theory.
-
-You can replace your section with this.
 
 ---
 
