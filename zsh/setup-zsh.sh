@@ -222,8 +222,6 @@ ZSH_CONFIG_BLOCK=$(cat <<'EOF'
 # History substring search keybindings
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-# Accept autosuggestion with TAB if available
-bindkey '^I' autosuggest-accept
 
 # Autosuggestions tuning
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
