@@ -3,8 +3,9 @@ set -e
 
 case "$1" in
   enable)
-    defaults write NSGlobalDomain KeyRepeat -int 1
-    defaults write NSGlobalDomain InitialKeyRepeat -int 10
+    # Slightliy faster than default (~30%)
+    defaults write NSGlobalDomain KeyRepeat -int 4
+    defaults write NSGlobalDomain InitialKeyRepeat -int 18
     defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
     ;;
   restore)
